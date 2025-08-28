@@ -1,76 +1,161 @@
-## DQL – Data Query Language
+# Data Query Language (DQL) Functions in SQL
 
-DQL is used to **query and retrieve data**.
+This document provides an overview of the main DQL functions in SQL, focusing on how to **query and retrieve data** from a database. DQL stands for **Data Query Language**.
 
-### SELECT
+---
+
+## 1. SELECT
+
+**Purpose:** Retrieve data from one or more tables.
+
+**Basic Syntax:**
 ```sql
-SELECT Name, Email
-FROM Customers;
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition
+ORDER BY column1 ASC|DESC
+GROUP BY column1
+HAVING condition;
 ```
 
-### WHERE
-```sql
-SELECT Name
-FROM Customers
-WHERE Name = 'Gabriel';
-```
+**Key Points:**
+- `SELECT *` retrieves all columns.
+- Can retrieve single or multiple columns.
+- Supports filtering (`WHERE`), sorting (`ORDER BY`), and grouping (`GROUP BY`).
+- Can include calculations, expressions, and functions.
 
-### ORDER BY
+**Example:**
 ```sql
-SELECT Name
-FROM Customers
-ORDER BY Name ASC;
-```
-
-### DISTINCT
-```sql
-SELECT DISTINCT City
-FROM Customers;
+SELECT employee_name, salary
+FROM employees
+WHERE active = 1
+ORDER BY salary DESC;
 ```
 
 ---
 
-## Aliases (AS)
+## 2. DISTINCT
 
-Used to **rename columns or tables temporarily**.
+**Purpose:** Return unique values for the selected columns.
 
+**Basic Syntax:**
 ```sql
-SELECT Name AS CustomerName, Email AS CustomerEmail
-FROM Customers AS C;
+SELECT DISTINCT column1, column2
+FROM table_name;
+```
+
+**Key Points:**
+- Removes duplicate rows based on the selected columns.
+
+**Example:**
+```sql
+SELECT DISTINCT department_id
+FROM employees;
 ```
 
 ---
 
-## Operators
+## 3. WHERE
 
-### Arithmetic Operators
-`+`, `-`, `*`, `/`
+**Purpose:** Filter rows based on conditions.
+
+**Basic Syntax:**
 ```sql
-SELECT 10 + 5 AS Sum, 10 / 2 AS Division;
+SELECT column1, column2
+FROM table_name
+WHERE condition;
 ```
 
-### Logical Operators
-`AND`, `OR`, `NOT`
+**Key Points:**
+- Supports operators like `=, <>, >, <, >=, <=, IN, BETWEEN, LIKE, IS NULL`.
+- Can combine conditions using `AND`, `OR`, and `NOT`.
+
+**Example:**
 ```sql
-SELECT *
-FROM Customers
-WHERE City = 'Belo Horizonte' AND Age >= 18;
+SELECT employee_name, salary
+FROM employees
+WHERE salary > 5000 AND active = 1;
 ```
 
-### Comparison Operators
-`=`, `<>`, `<`, `>`, `<=`, `>=`, `BETWEEN`, `LIKE`, `IN`
-```sql
--- Equal and not equal
-SELECT * FROM Customers WHERE Name = 'Gabriel';
-SELECT * FROM Customers WHERE Name <> 'Gabriel';
-
--- Between values
-SELECT * FROM Customers WHERE Age BETWEEN 18 AND 30;
-
--- Pattern matching
-SELECT * FROM Customers WHERE Name LIKE 'G%';
-
--- List of values
-SELECT * FROM Customers WHERE City IN ('BH', 'SP');
-```
 ---
+
+## 4. ORDER BY
+
+**Purpose:** Sort query results.
+
+**Basic Syntax:**
+```sql
+SELECT column1, column2
+FROM table_name
+ORDER BY column1 ASC|DESC, column2 ASC|DESC;
+```
+
+**Key Points:**
+- Default is `ASC` (ascending).
+- Can sort by multiple columns.
+
+**Example:**
+```sql
+SELECT employee_name, hire_date
+FROM employees
+ORDER BY hire_date DESC;
+```
+
+---
+
+## 5. GROUP BY
+
+**Purpose:** Aggregate data by one or more columns.
+
+**Basic Syntax:**
+```sql
+SELECT column1, COUNT(*), SUM(column2)
+FROM table_name
+GROUP BY column1;
+```
+
+**Key Points:**
+- Often used with aggregate functions: `COUNT, SUM, AVG, MIN, MAX`.
+- Combine with `HAVING` to filter aggregated results.
+
+**Example:**
+```sql
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id
+HAVING AVG(salary) > 5000;
+```
+
+---
+
+## 6. JOIN (Optional in Queries)
+
+**Purpose:** Combine rows from two or more tables.
+
+**Types:** `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL OUTER JOIN`
+
+**Basic Syntax:**
+```sql
+SELECT a.column1, b.column2
+FROM table_a a
+INNER JOIN table_b b ON a.key = b.key;
+```
+
+**Example:**
+```sql
+SELECT e.employee_name, d.department_name
+FROM employees e
+INNER JOIN departments d ON e.department_id = d.department_id;
+```
+
+---
+
+**Summary:**
+- `SELECT` → retrieve data.
+- `DISTINCT` → unique results.
+- `WHERE` → filter rows.
+- `ORDER BY` → sort results.
+- `GROUP BY` → aggregate data.
+- `JOIN` → combine data from multiple tables.
+
+DQL functions are essential for extracting insights from a database efficiently and effectively.
