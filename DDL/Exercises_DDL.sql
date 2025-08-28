@@ -10,13 +10,13 @@ Task 1 – Employees Table:
 Design a table to store employee information: ID, name, birth date, hire date, salary.
 Think about primary keys, data types, and constraints (e.g., salary should not be negative).
 */
-
+drop TABLE staff
 CREATE TABLE employees(
-    employee_id INT PRIMARY KEY,
+    employee_id INT IDENTITY(1,1) PRIMARY KEY ,
     employee_name VARCHAR(50) NOT NULL,
     birth_date DATE NOT NULL,
     hire_date DATE NOT NULL,
-    active BIT DEFAULT 0,
+    active BIT DEFAULT 1,
     salary DECIMAL CHECK (salary >=0)
 );
 
