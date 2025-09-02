@@ -12,7 +12,6 @@ VALUES(1, 'employee1', '1990-01-01', '2025-01-01', '10000', 'employee1@email.com
     (3, 'employee3', '1992-01-01', '2025-03-01', '5000.50', 'employee3@email.com', '2025-03-01', '2025-03-01')
 
 /*
-2. UPDATE
 Exercise 2 – Bulk Insert from External Source
 You received a CSV file with employee information from HR. How would you insert multiple employees at once while checking that all constraints (salary ≥ 0, birth_date not null) are respected?
 */
@@ -26,7 +25,7 @@ WITH (
 );
 
 /*
-2. UPDATE (Modifying employee data)
+3. UPDATE
 
 Exercise 3 – Update salary of a single employee
 Update the salary of the employee with employee_id = 3 to 7000.
@@ -45,9 +44,21 @@ UPDATE staff
 SET salary = salary * 1.1
 WHERE active = 1
 
-select * from staff
+/*
+Exercise 9 – Update multiple columns at once
+For the employee with employee_id = 10, set:
+salary = 8000
+active = 1
+modified_date = current date
+*/
+
+UPDATE staff
+SET salary = 8000, active = 1, modified_date = GETDATE()
+WHERE employee_id = 10
 
 /*
+3. DELETE
+
 Exercise 5 – Delete a single employee
 Delete the employee with employee_id = 5.
 */
