@@ -28,26 +28,9 @@ SELECT CustomerID
 FROM cte
 WHERE CountOrders > 10
 
-/*
-Exercise 3 – CTE with JOIN
-
-Write a CTE that lists each employee and the total number of orders they handled. Then query the CTE to return employees who processed more than 100 orders.
-*/
 
 /*
-Exercise 4 – Recursive CTE
-
-Use a recursive CTE to list the hierarchy of employees, starting with managers and including their subordinates (based on ReportsTo column in Employees table).
-*/
-
-/*
-Exercise 5 – CTE with Multiple References
-
-Create a CTE that calculates the average UnitPrice per category from the Products table. Then, select only the categories where the average price is higher than 30.
-*/
-
-/*
-Exercise 6 – CTE in a Multi-CTE Query
+Exercise 3 – CTE in a Multi-CTE Query
 
 First CTE: Count the number of orders per employee.
 
@@ -56,14 +39,39 @@ Second CTE: Calculate the average orders across all employees.
 Final query: Select employees who handled more orders than the average.
 */
 
+WITH cte AS(
+    SELECT EmployeeID, COUNT(OrderID) AS CountOrders
+    FROM Orders
+    GROUP BY EmployeeID
+),
+
+cte1 AS(
+    SELECT AVG(CountOrders) AS AvgOrders
+    FROM cte
+)
+
+SELECT EmployeeID
+FROM cte
+WHERE CountOrders > (SELECT AvgOrders FROM cte1)
+
 /*
-Exercise 7 – Nested CTEs
+Exercise 4 – Nested CTEs
 
 Use a CTE to find the top 5 most expensive products. Then use another CTE (based on the first one) to list only those products whose UnitPrice is greater than the overall average UnitPrice of all products.
 */
 
-/*
-Exercise 8 – CTE with Window Function
+WITH cte AS(
+    SELECT TOP 5 ProductID, UnitPrice
+    FROM Products
+    ORDER BY UnitPrice DESC
+),
 
-Write a CTE that assigns a row number (ROW_NUMBER()) to each order per customer, ordered by OrderDate. Then, select only the most recent order for each customer.
-*/
+cte1 AS(
+    SELECT AVG(UnitPrice) AS AvgUnitPrice
+    FROM Products
+)
+
+SELECT ProductID, UnitPrice
+FROM cte
+WHERE UnitPrice > (SELECT AvgUnitPrice FROM cte1)
+
